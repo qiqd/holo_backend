@@ -19,9 +19,9 @@ public class HistoryController {
     return ResponseEntity.ok(historyService.queryHistory());
   }
 
-  @PostMapping("/save")
-  public ResponseEntity<List<History>> saveHistory(@RequestBody History history) {
-    historyService.saveHistory(history);
+  @PostMapping("/save/batch")
+  public ResponseEntity<List<History>> saveHistory(@RequestBody List<History> historyList) {
+    historyService.saveHistory(historyList);
     return ResponseEntity.ok(historyService.queryHistory());
   }
 
@@ -31,7 +31,7 @@ public class HistoryController {
     return ResponseEntity.ok("History deleted");
   }
 
-  @DeleteMapping("/delete-all")
+  @DeleteMapping("/delete/all")
   public ResponseEntity<String> removeAllHistory() {
     historyService.removeAllHistory();
     return ResponseEntity.ok("All history removed");

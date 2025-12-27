@@ -20,11 +20,21 @@ public class HistoryService {
     return historyRepository.findAllByUserId(userId);
   }
 
-  public void saveHistory(History history) {
-    history.setUserId(userContent.getUserId());
-    history.setCreatedAt(LocalDateTime.now());
-    history.setUpdatedAt(LocalDateTime.now());
-    historyRepository.save(history);
+  public void saveHistory(List<History> historyList) {
+   historyList.forEach(history -> { historyRepository.findById(history.getId()).ifPresentOrElse(historyFromDb -> {
+     historyFromDb.setPosition(history.getPosition());
+     historyFromDb.setEpisodeIndex(history.getEpisodeIndex());
+     historyFromDb.setLineIndex(history.getLineIndex());
+     historyFromDb.setLastViewAt(history.getLastViewAt());
+     historyFromDb.setUpdatedAt(LocalDateTime.now());
+     historyRepository.save(historyFromDb);
+   }, () -> {
+     history.setUserId(userContent.getUserId());
+     history.setCreatedAt(LocalDateTime.now());
+     history.setUpdatedAt(LocalDateTime.now());
+     historyRepository.save(history);
+   });});
+
   }
 
   public void deleteHistoryById(String id) {
