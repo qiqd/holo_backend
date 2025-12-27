@@ -10,7 +10,8 @@ on:
         type: string
 
 jobs:
-  build-native:
+  # 构建Ubuntu本地镜像和Docker镜像
+  build-native-ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,6 +33,13 @@ jobs:
 
       - name: List target directory
         run: ls -la target/
+
+      - name: Upload Ubuntu native image
+        uses: actions/upload-artifact@v4
+        with:
+          name: holo-backend-ubuntu-${{ github.event.inputs.version }}
+          path: target/holo-backend
+          retention-days: 30
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -58,11 +66,39 @@ jobs:
           docker push ghcr.io/${{ github.actor }}/holo-backend:latest
 
       - name: Save Docker image as tar
-        run: docker save -o holo-backend-${{ github.event.inputs.version }}.tar holo-backend:${{ github.event.inputs.version }}
+        run: docker save -o holo-backend-docker-${{ github.event.inputs.version }}.tar holo-backend:${{ github.event.inputs.version }}
 
       - name: Upload Docker image as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: holo-backend-image-${{ github.event.inputs.version }}
-          path: holo-backend-${{ github.event.inputs.version }}.tar
+          name: holo-backend-docker-${{ github.event.inputs.version }}
+          path: holo-backend-docker-${{ github.event.inputs.version }}.tar
+          retention-days: 30
+
+  # 构建Windows本地镜像
+  build-native-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: 'graalvm-community'
+          native-image-job-reports: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build native image with Maven
+        run: .\mvnw.cmd -Pnative native:compile
+
+      - name: List target directory
+        run: ls -la target/
+
+      - name: Upload Windows native image
+        uses: actions/upload-artifact@v4
+        with:
+          name: holo-backend-windows-${{ github.event.inputs.version }}
+          path: target/holo-backend.exe
           retention-days: 30
