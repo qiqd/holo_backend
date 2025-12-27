@@ -29,4 +29,7 @@ public class History {
   private Integer lineIndex;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  private LocalDateTime lastSubscribeAt;
+  private Boolean isSync;
+  private Boolean isPlaybackHistory;
 }
