@@ -8,8 +8,8 @@
     <version>3.5.9</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>org.holo</groupId>
-  <artifactId>backend</artifactId>
+  <groupId>com.github.qiqd.holo</groupId>
+  <artifactId>holo-backend</artifactId>
   <version>1.0.0</version>
   <name>Holo</name>
   <description>Holo backend service provides RESTful APIs for Holo mobile app,power by Spring Boot 3.5.9</description>
