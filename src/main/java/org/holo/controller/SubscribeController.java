@@ -27,7 +27,7 @@ public class SubscribeController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = SubscribeHistory.class)))
   })
-  @GetMapping("/query/subscribe")
+  @GetMapping("/query")
   public ResponseEntity<List<SubscribeHistory>> querySubscribeHistory() {
     return ResponseEntity.ok(subscribeHistoryService.queryAll());
   }
@@ -38,7 +38,7 @@ public class SubscribeController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = SubscribeHistory.class)))
   })
-  @GetMapping("/query/subscribe/{subId}")
+  @GetMapping("/query/{subId}")
   public ResponseEntity<SubscribeHistory> querySubscribeHistory(@PathVariable Integer subId) {
     return ResponseEntity.ok(subscribeHistoryService.queryBySubId(subId));
   }
@@ -49,7 +49,7 @@ public class SubscribeController {
                   content = @Content(mediaType = "text/plain",
                           schema = @Schema(implementation = String.class)))
   })
-  @DeleteMapping("/delete/subscribe/{subId}")
+  @DeleteMapping("/delete/{subId}")
   public ResponseEntity<String> removeSubscribeHistory(@PathVariable Integer subId) {
     subscribeHistoryService.removeBySubId(subId);
     return ResponseEntity.ok("Subscribe history removed");
@@ -61,7 +61,7 @@ public class SubscribeController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = SubscribeHistory.class)))
   })
-  @PostMapping("/save/subscribe")
+  @PostMapping("/save")
   public ResponseEntity<SubscribeHistory> saveSubscribe(@RequestBody SubscribeHistory subscribeHistory) {
     return ResponseEntity.ok(subscribeHistoryService.save(subscribeHistory));
   }
@@ -72,7 +72,7 @@ public class SubscribeController {
                   content = @Content(mediaType = "text/plain",
                           schema = @Schema(implementation = String.class)))
   })
-  @DeleteMapping("/delete/subscribe")
+  @DeleteMapping("/delete")
   public ResponseEntity<String> removeAllSubscribeHistory() {
     subscribeHistoryService.removeAll();
     return ResponseEntity.ok("All subscribe history removed");

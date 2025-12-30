@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/history")
+@RequestMapping("/playback")
 @RequiredArgsConstructor
 @Tag(name = "播放历史", description = "历史记录管理接口 - 包括播放历史和订阅历史")
 public class HistoryController {
@@ -29,7 +29,7 @@ public class HistoryController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = PlaybackHistory.class)))
   })
-  @GetMapping("/query/playback")
+  @GetMapping("/query")
   public ResponseEntity<List<PlaybackHistory>> queryPlaybackHistory() {
     return ResponseEntity.ok(playbackHistoryService.queryAll());
   }
@@ -40,7 +40,7 @@ public class HistoryController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = PlaybackHistory.class)))
   })
-  @GetMapping("/query/playback/{subId}")
+  @GetMapping("/query/{subId}")
   public ResponseEntity<PlaybackHistory> queryPlaybackHistory(@PathVariable Integer subId) {
     return ResponseEntity.ok(playbackHistoryService.queryBySubId(subId));
   }
@@ -51,7 +51,7 @@ public class HistoryController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = PlaybackHistory.class)))
   })
-  @PostMapping("/save/playback")
+  @PostMapping("/save")
   public ResponseEntity<PlaybackHistory> savePlayback(@RequestBody PlaybackHistory history) {
     return ResponseEntity.ok(playbackHistoryService.save(history));
   }
@@ -62,7 +62,7 @@ public class HistoryController {
                   content = @Content(mediaType = "text/plain",
                           schema = @Schema(implementation = String.class)))
   })
-  @DeleteMapping("/delete/playback/{subId}")
+  @DeleteMapping("/delete/{subId}")
   public ResponseEntity<String> removePlaybackHistory(@PathVariable Integer subId) {
     playbackHistoryService.removeBySubId(subId);
     return ResponseEntity.ok("Playback history removed");
@@ -74,7 +74,7 @@ public class HistoryController {
                   content = @Content(mediaType = "text/plain",
                           schema = @Schema(implementation = String.class)))
   })
-  @DeleteMapping("/delete/playback")
+  @DeleteMapping("/delete")
   public ResponseEntity<String> removeAllPlaybackHistory() {
     playbackHistoryService.removeAll();
     return ResponseEntity.ok("All playback history removed");
