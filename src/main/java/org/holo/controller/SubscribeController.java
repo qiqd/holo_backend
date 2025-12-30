@@ -49,7 +49,7 @@ public class SubscribeController {
                   content = @Content(mediaType = "text/plain",
                           schema = @Schema(implementation = String.class)))
   })
-  @DeleteMapping("/query/subscribe/{subId}")
+  @DeleteMapping("/delete/subscribe/{subId}")
   public ResponseEntity<String> removeSubscribeHistory(@PathVariable Integer subId) {
     subscribeHistoryService.removeBySubId(subId);
     return ResponseEntity.ok("Subscribe history removed");

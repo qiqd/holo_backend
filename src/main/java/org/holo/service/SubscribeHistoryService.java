@@ -1,5 +1,6 @@
 package org.holo.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.holo.content.UserContent;
 import org.holo.entity.SubscribeHistory;
@@ -28,11 +29,12 @@ public class SubscribeHistoryService {
     repository.removeFirstBySubIdAndUserId(subId, userContent.getUserId());
   }
 
-  public SubscribeHistory save(SubscribeHistory subscribeHistory) {
+  public SubscribeHistory save(@NonNull SubscribeHistory subscribeHistory) {
     subscribeHistory.setUserId(userContent.getUserId());
     subscribeHistory.setCreatedAt(LocalDateTime.now());
     List<SubscribeHistory> subscribeHistories = repository.queryFirstBySubIdAndUserId(subscribeHistory.getSubId(), userContent.getUserId());
     if (subscribeHistories.isEmpty()) {
+      subscribeHistory.setIsSync(true);
       return repository.save(subscribeHistory);
     } else {
       SubscribeHistory first = subscribeHistories.getFirst();

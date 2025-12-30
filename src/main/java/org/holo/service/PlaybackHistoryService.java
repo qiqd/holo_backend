@@ -1,5 +1,6 @@
 package org.holo.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.holo.content.UserContent;
 import org.holo.entity.PlaybackHistory;
@@ -23,17 +24,19 @@ public class PlaybackHistoryService {
   public PlaybackHistory queryBySubId(Integer subId) {
     return repository.queryFirstBySubIdAndUserId(subId, userContent.getUserId()).getFirst();
   }
+
   public void removeBySubId(Integer subId) {
     repository.removeFirstBySubIdAndUserId(subId, userContent.getUserId());
   }
-  public PlaybackHistory save(PlaybackHistory playbackHistory){
+
+  public PlaybackHistory save(@NonNull PlaybackHistory playbackHistory) {
     playbackHistory.setUserId(userContent.getUserId());
     playbackHistory.setCreatedAt(LocalDateTime.now());
     List<PlaybackHistory> playbackHistories = repository.queryFirstBySubIdAndUserId(playbackHistory.getSubId(), userContent.getUserId());
     if (playbackHistories.isEmpty()) {
-       playbackHistory.setIsSync(true);
-       repository.save(playbackHistory);
-    }else {
+      playbackHistory.setIsSync(true);
+      return repository.save(playbackHistory);
+    } else {
       PlaybackHistory first = playbackHistories.getFirst();
       first.setIsSync(true);
       first.setLastPlaybackAt(playbackHistory.getLastPlaybackAt());
@@ -43,10 +46,8 @@ public class PlaybackHistoryService {
       first.setAirDate(playbackHistory.getAirDate());
       first.setTitle(playbackHistory.getTitle());
       first.setImgUrl(playbackHistory.getImgUrl());
-      repository.save(first);
+      return repository.save(first);
     }
-
-    return repository.save(playbackHistory);
   }
 
   public void removeAll() {
