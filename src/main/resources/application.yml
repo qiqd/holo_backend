@@ -5,7 +5,8 @@ spring:
     mongodb:
       uri: ${HOLO_DATABASE_URL:mongodb://localhost:27017/holo_db}
       database: ${HOLO_DATABASE_SCHEMA:holo_db}
-
+  Jackson:
+    time-zone: GMT+8
 jwt:
    secret: ${HOLO_JWT_SECRET:holo_jwt_secret}
    expiration: ${HOLO_JWT_EXPIRATION:150}
